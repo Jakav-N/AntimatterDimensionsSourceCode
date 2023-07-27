@@ -33,6 +33,7 @@ TimeStudy.allConnections = (function() {
   const connections = [
     [TS(11), TS(21)],
     [TS(11), TS(22)],
+    [TS(11), TS(23)],
 
     [TS(21), TS(31)],
     [TS(22), TS(33)],

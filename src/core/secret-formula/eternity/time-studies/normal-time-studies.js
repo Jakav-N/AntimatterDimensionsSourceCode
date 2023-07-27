@@ -74,6 +74,14 @@ export const normalTimeStudies = [
     effect: 1
   },
   {
+    id: 23,
+    cost: -1000,
+    requirement: [11],
+    reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
+    description: "1000 free time theorems",
+    effect: 1
+  },
+  {
     id: 31,
     cost: 3,
     requirement: [21],

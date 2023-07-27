@@ -370,7 +370,11 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
   // an effarig glyph.
   factor = Math.clamp(factor, 1e-300, 1e300);
 
-  return factor;
+  if (NormalChallenge(11).isRunning || InfinityChallenge(6).isRunning) {
+    return factor;
+  }
+
+  return factor * 1e50;
 }
 
 export function getGameSpeedupForDisplay() {
@@ -434,9 +438,13 @@ export function gameLoop(passDiff, options = {}) {
 
   let diff = passDiff;
   const thisUpdate = Date.now();
-  const realDiff = diff === undefined
-    ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7)
-    : diff;
+
+  const realDiff = (NormalChallenge(11).isRunning || InfinityChallenge(6).isRunning
+   || EternityChallenge(12).isRunning) ? (diff === undefined ? 1e10 : diff * 100) : 
+   (diff === undefined ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : diff);
+
+   //  ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : diff;
+
   if (!GameStorage.ignoreBackupTimer) player.backupTimer += realDiff;
 
   // For single ticks longer than a minute from the GameInterval loop, we assume that the device has gone to sleep or
@@ -445,12 +453,12 @@ export function gameLoop(passDiff, options = {}) {
   // result in a ~1 second tick rate for browsers.
   // Note that we have to explicitly call all the real-time mechanics with the existing value of realDiff, because
   // simply letting it run through simulateTime seems to result in it using zero
-  if (player.options.hibernationCatchup && passDiff === undefined && realDiff > 6e4) {
+  /*if (player.options.hibernationCatchup && passDiff === undefined && realDiff > 6e4) {
     GameIntervals.gameLoop.stop();
     simulateTime(realDiff / 1000, true);
     realTimeMechanics(realDiff);
     return;
-  }
+  }*/
 
   // Run all the functions which only depend on real time and not game time, skipping the rest of the loop if needed
   if (realTimeMechanics(realDiff)) return;
