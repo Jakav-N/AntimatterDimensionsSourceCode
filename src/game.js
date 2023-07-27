@@ -440,9 +440,10 @@ export function gameLoop(passDiff, options = {}) {
   const thisUpdate = Date.now();
 
   const realDiff = (NormalChallenge(11).isRunning || InfinityChallenge(6).isRunning
-   || EternityChallenge(12).isRunning) ? (diff === undefined ? 1e10 : diff * 100) : 
-   (diff === undefined ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : diff);
-
+   || EternityChallenge(12).isRunning) ? (diff === undefined ? 
+   Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : diff) :
+   (diff === undefined ? 1e10 : diff * 100) ;
+   
    //  ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : diff;
 
   if (!GameStorage.ignoreBackupTimer) player.backupTimer += realDiff;
