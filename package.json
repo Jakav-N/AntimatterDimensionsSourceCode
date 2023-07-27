@@ -6,7 +6,7 @@
     "build:release": "node build/pre-build.js && vue-cli-service build && node build/post-build.js",
     "build:steam-development": "node build/pre-build.js && vue-cli-service build --mode steam-development",
     "build:steam-release": "node build/pre-build.js && vue-cli-service build --mode steam-release",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
     "deploy": "npm run build:release && gh-pages -d dist"
   },
   "dependencies": {
