@@ -17,6 +17,8 @@ export default {
       isStopped: false,
       isEC12: false,
       isPulsing: false,
+      ultraSlider: 1,
+      ultraSpeedImprovement: 1
     };
   },
   computed: {
@@ -50,10 +52,14 @@ export default {
       this.isPulsing = (this.baseSpeed !== this.pulsedSpeed) && Enslaved.canRelease(true);
 
       this.ultraSlider = Math.log10(player.ultraSpeed);
+      console.log(this.ultraSlider);
+      console.log(player.ultraSpeed + " is player.ultraSpeed");
       this.ultraSpeedImprovement = Math.pow(10, this.ultraSlider);
     },
     adjustSlider(value) {
       this.ultraSlider = value;
+      console.log(this.ultraSlider);
+      console.log(value + " is value");
       player.ultraSpeed = Math.pow(10, this.ultraSlider);
       this.ultraSpeedImprovement = Math.pow(10, this.ultraSlider);
     },
