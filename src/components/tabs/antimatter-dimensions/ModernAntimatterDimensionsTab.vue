@@ -6,6 +6,8 @@ import DimensionBoostRow from "@/components/tabs/antimatter-dimensions/ModernDim
 import PrimaryButton from "@/components/PrimaryButton";
 import TickspeedRow from "@/components/tabs/antimatter-dimensions/TickspeedRow";
 
+import SliderComponent from "@/components/SliderComponent";
+
 export default {
   name: "ModernAntimatterDimensionsTab",
   components: {
@@ -14,7 +16,8 @@ export default {
     AntimatterDimensionRow,
     AntimatterGalaxyRow,
     DimensionBoostRow,
-    TickspeedRow
+    TickspeedRow,
+    SliderComponent
   },
   data() {
     return {
@@ -30,6 +33,8 @@ export default {
       hasContinuum: false,
       isContinuumActive: false,
       multiplierText: "",
+      ultraSlider: 0,
+      ultraSpeedImprovement: 0,
     };
   },
   computed: {
@@ -90,13 +95,42 @@ export default {
         ? ` | Dimensional Sacrifice multiplier: ${formatX(this.currentSacrifice, 2, 2)}`
         : "";
       this.multiplierText += sacText;
-    }
+
+      this.ultraSlider = Math.log10(player.ultraSpeed);
+      this.ultraSpeedImprovement = Math.pow(10, this.ultraSlider);
+    },
+    adjustSlider(value) {
+      this.ultraSlider = value;
+      player.ultraSpeed = Math.pow(10, this.ultraSlider);
+      this.ultraSpeedImprovement = Math.pow(10, this.ultraSlider);
+    },
+    sliderProps(value) {
+      return {
+        min: 0,
+        max: 50,
+        interval: 1,
+        width: "40rem",
+        tooltip: false
+      };
+    },
   }
 };
 </script>
 
 <template>
   <div class="l-antimatter-dim-tab">
+    <div class="l-enslaved-shop-container">
+      <div class="l-superpower-sliders">
+        <b>
+          Superpowers muliply real and game time speed by {{ format(ultraSpeedImprovement, 2, 2) }}.
+        </b>
+        <SliderComponent
+          v-bind="sliderProps(true)"
+          :value="ultraSlider"
+          @input="adjustSlider($event)"
+        />
+      </div>
+    </div>
     <div class="modes-container">
       <button
         class="o-primary-btn l-button-container"
@@ -152,5 +186,9 @@ export default {
   width: 100px;
   height: 30px;
   padding: 0;
+}
+
+.l-superpower-sliders {
+  width: 40rem;
 }
 </style>

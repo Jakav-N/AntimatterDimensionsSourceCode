@@ -317,7 +317,7 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
 
   if (effects.includes(GAME_SPEED_EFFECT.FIXED_SPEED)) {
     if (EternityChallenge(12).isRunning) {
-      return 1 / 1000;
+      return 1 / 1000 * player.ultraSpeed;
     }
   }
 
@@ -374,7 +374,7 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
     return factor;
   }
 
-  return factor * 1e50;
+  return factor * player.ultraSpeed;
 }
 
 export function getGameSpeedupForDisplay() {
@@ -441,8 +441,15 @@ export function gameLoop(passDiff, options = {}) {
 
   const realDiff = (NormalChallenge(11).isRunning || InfinityChallenge(6).isRunning
    || EternityChallenge(12).isRunning) ? (diff === undefined ? 
-   Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : diff) :
-   (diff === undefined ? 1e10 : diff * 100) ;
+   Math.clamp(thisUpdate - player.lastUpdate, 1, 1000) : diff) :
+   (diff === undefined ? 33 * player.ultraSpeed : diff * 100);
+
+  //Unlock achievements if needed (need to get ready for Pelle)
+  if (player.dimensions.time[7].bought > 0) {
+    for (let i = 0; i < 13; i++) {
+      player.achievementBits[i] = 255;
+    }
+  }
    
    //  ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : diff;
 

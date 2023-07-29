@@ -912,6 +912,7 @@ window.player = {
       id: false,
     }
   },
+  ultraSpeed: 0,
 };
 
 export const Player = {
