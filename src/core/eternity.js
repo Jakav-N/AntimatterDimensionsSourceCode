@@ -234,10 +234,10 @@ function askEternityConfirmation() {
 
 export function gainedEternities() {
   return Pelle.isDisabled("eternityMults")
-    ? new Decimal(1)
+    ? new Decimal(1000)
     : new Decimal(getAdjustedGlyphEffect("timeetermult"))
       .timesEffectsOf(RealityUpgrade(3), Achievement(113))
-      .pow(AlchemyResource.eternity.effectValue);
+      .pow(AlchemyResource.eternity.effectValue).times(new Decimal(1000));
 }
 
 export class EternityMilestoneState {
