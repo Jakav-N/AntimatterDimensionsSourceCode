@@ -1,7 +1,13 @@
 <script>
+
+import SliderComponent from "@/components/SliderComponent";
+
 export default {
   name: "GameSpeedDisplay",
   props: {
+  },
+  components: {
+    SliderComponent
   },
   data() {
     return {
@@ -42,6 +48,23 @@ export default {
       this.isStopped = Enslaved.isStoringRealTime;
       this.isEC12 = EternityChallenge(12).isRunning;
       this.isPulsing = (this.baseSpeed !== this.pulsedSpeed) && Enslaved.canRelease(true);
+
+      this.ultraSlider = Math.log10(player.ultraSpeed);
+      this.ultraSpeedImprovement = Math.pow(10, this.ultraSlider);
+    },
+    adjustSlider(value) {
+      this.ultraSlider = value;
+      player.ultraSpeed = Math.pow(10, this.ultraSlider);
+      this.ultraSpeedImprovement = Math.pow(10, this.ultraSlider);
+    },
+    sliderProps(value) {
+      return {
+        min: 0,
+        max: 50,
+        interval: 1,
+        width: "40rem",
+        tooltip: false
+      };
     },
     formatNumber(num) {
       if (num >= 0.001 && num < 10000 && num !== 1) {
@@ -57,17 +80,36 @@ export default {
 </script>
 
 <template>
-  <span class="c-gamespeed">
-    <span>
-      {{ baseText }}
+  <div>
+    <span class="c-gamespeed">
+      <span>
+        {{ baseText }}
+      </span>
+      <span v-if="isPulsing">(<i class="fas fa-expand-arrows-alt u-fa-padding" /> {{ pulseSpeedText }})</span>
     </span>
-    <span v-if="isPulsing">(<i class="fas fa-expand-arrows-alt u-fa-padding" /> {{ pulseSpeedText }})</span>
-  </span>
+
+    <div class="l-enslaved-shop-container">
+      <div class="l-superpower-sliders">
+        <b>
+          Superpowers muliply real and game time speed by {{ format(ultraSpeedImprovement, 2, 2) }}.
+        </b>
+        <SliderComponent
+          v-bind="sliderProps(true)"
+          :value="ultraSlider"
+          @input="adjustSlider($event)"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
 .c-gamespeed {
   font-weight: bold;
   color: var(--color-text);
+}
+
+.l-superpower-sliders {
+  width: 40rem;
 }
 </style>

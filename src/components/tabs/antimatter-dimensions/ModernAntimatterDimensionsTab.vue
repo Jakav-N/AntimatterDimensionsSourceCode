@@ -96,22 +96,7 @@ export default {
         : "";
       this.multiplierText += sacText;
 
-      this.ultraSlider = Math.log10(player.ultraSpeed);
-      this.ultraSpeedImprovement = Math.pow(10, this.ultraSlider);
-    },
-    adjustSlider(value) {
-      this.ultraSlider = value;
-      player.ultraSpeed = Math.pow(10, this.ultraSlider);
-      this.ultraSpeedImprovement = Math.pow(10, this.ultraSlider);
-    },
-    sliderProps(value) {
-      return {
-        min: 0,
-        max: 50,
-        interval: 1,
-        width: "40rem",
-        tooltip: false
-      };
+
     },
   }
 };
@@ -119,18 +104,6 @@ export default {
 
 <template>
   <div class="l-antimatter-dim-tab">
-    <div class="l-enslaved-shop-container">
-      <div class="l-superpower-sliders">
-        <b>
-          Superpowers muliply real and game time speed by {{ format(ultraSpeedImprovement, 2, 2) }}.
-        </b>
-        <SliderComponent
-          v-bind="sliderProps(true)"
-          :value="ultraSlider"
-          @input="adjustSlider($event)"
-        />
-      </div>
-    </div>
     <div class="modes-container">
       <button
         class="o-primary-btn l-button-container"
@@ -186,9 +159,5 @@ export default {
   width: 100px;
   height: 30px;
   padding: 0;
-}
-
-.l-superpower-sliders {
-  width: 40rem;
 }
 </style>
